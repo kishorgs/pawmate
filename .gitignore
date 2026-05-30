@@ -12,6 +12,7 @@ node_modules
 coverage
 **/coverage
 scripts/rewrite-commit-msg.*
+scripts/fix-issue-refs.py
 **/.next
 dist
 dist-ssr
