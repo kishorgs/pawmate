@@ -3,7 +3,6 @@ name: release/tag automation
 on:
   push:
     tags:
-      - 'v*.*.*'
       - 'v*'
   workflow_dispatch:
 

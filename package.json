@@ -28,6 +28,7 @@
     "lint": "npm run lint:frontend && npm run lint:backend",
     "test:backend": "npm test -w apps/backend",
     "test:cov": "npm run test:cov -w apps/backend",
-    "test": "npm run test:backend"
+    "test": "npm run test:backend",
+    "security:scan": "npm audit --audit-level=high"
   }
 }

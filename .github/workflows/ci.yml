@@ -37,17 +37,12 @@ jobs:
         run: npm run test:cov -- --coverageThreshold='{"global":{"branches":3,"functions":2,"lines":3,"statements":3}}'
 
   security-scan:
-    name: security scan
+    name: security/scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Secrets scanning step
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-node@v5
         with:
@@ -57,8 +52,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Vulnerability scanning step
+      - name: secrets scanning step
+        run: npx --yes gitleaks@8.21.2 detect --source . --no-git --redact
+
+      - name: vulnerability scanning step
         run: npm audit --audit-level=high
+
+      - name: security/scan
+        run: npm run security:scan
 
   build:
     runs-on: ubuntu-latest
