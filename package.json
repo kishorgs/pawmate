@@ -29,6 +29,7 @@
     "test:backend": "npm test -w apps/backend",
     "test:cov": "npm run test:cov -w apps/backend",
     "test": "npm run test:backend",
-    "security:scan": "npm audit --audit-level=high"
+    "security:scan": "npm audit --audit-level=high",
+    "secrets:scan": "npx --yes gitleaks detect --source . --no-git --redact"
   }
 }

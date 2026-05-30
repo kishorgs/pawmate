@@ -1,4 +1,4 @@
-name: release/tag automation
+name: Release Tag Automation
 
 on:
   push:
@@ -10,16 +10,23 @@ permissions:
   contents: write
 
 jobs:
-  release_tag_automation:
-    name: release/tag automation
+  release-tag-automation:
+    name: release tag automation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: release/tag automation
+      - name: release tag automation
         run: echo "release tag automation for ${{ github.ref_name }}"
 
       - name: Release tag automation
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ github.ref_name }}
+          generateReleaseNotes: true
+          bodyFile: CHANGELOG.md
+
+      - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}

@@ -1,4 +1,4 @@
-name: security/scan
+name: security scan
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
         run: npm ci
 
       - name: secrets scanning step
-        run: npx --yes gitleaks@8.21.2 detect --source . --no-git --redact
+        run: npm run secrets:scan
 
       - name: vulnerability scanning step
         run: npm audit --audit-level=high
