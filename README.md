@@ -80,8 +80,17 @@ The first Firebase user to authenticate becomes **ADMIN** automatically. Subsequ
 ## Tests
 
 ```bash
-cd apps/backend && npm test
+npm run test:cov
 ```
+
+Coverage thresholds are enforced in `apps/backend/package.json` (Jest `coverageThreshold`).
+
+## Project governance
+
+- [CHANGELOG.md](CHANGELOG.md) — release history
+- [CONTRIBUTING.md](CONTRIBUTING.md) — branches, conventional commits, and PR flow
+- [AI_USAGE.md](AI_USAGE.md) — how AI tools are used on this repo
+- [docs/adr/](docs/adr/) — architecture decision records
 
 ## Legacy note
 

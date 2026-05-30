@@ -1,5 +1,6 @@
 {
   "name": "pawmate",
+  "version": "1.0.0",
   "private": true,
   "packageManager": "npm@10",
   "workspaces": [
@@ -16,6 +17,7 @@
     "lint:backend": "npm run lint -w apps/backend",
     "lint": "npm run lint:frontend && npm run lint:backend",
     "test:backend": "npm test -w apps/backend",
+    "test:cov": "npm run test:cov -w apps/backend",
     "test": "npm run test:backend"
   }
 }

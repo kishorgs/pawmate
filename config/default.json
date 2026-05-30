@@ -1,0 +1,10 @@
+{
+  "app": {
+    "name": "pawmate-api",
+    "apiPrefix": "api"
+  },
+  "server": {
+    "port": 4000,
+    "corsOrigin": "http://localhost:3000"
+  }
+}

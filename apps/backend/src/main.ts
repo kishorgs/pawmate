@@ -1,16 +1,22 @@
 import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Logger } from 'nestjs-pino';
+import { PawmateConfig } from './config/configuration';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   app.useLogger(app.get(Logger));
 
-  app.setGlobalPrefix('api');
+  const configService = app.get(ConfigService);
+  const config = configService.getOrThrow<PawmateConfig['app']>('app');
+  const server = configService.getOrThrow<PawmateConfig['server']>('server');
+
+  app.setGlobalPrefix(config.apiPrefix);
   app.enableCors({
-    origin: process.env.CORS_ORIGIN?.split(',') ?? ['http://localhost:3000'],
+    origin: server.corsOrigin.split(','),
     credentials: true,
   });
   app.useGlobalPipes(
@@ -30,8 +36,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api/docs', app, document);
 
-  const port = process.env.PORT ?? 4000;
-  await app.listen(port);
+  await app.listen(server.port);
 }
 
 void bootstrap();
