@@ -1,0 +1,22 @@
+# Supplemental workflow path for SDLCM security/scan detection
+name: security/scan
+
+on:
+  workflow_dispatch:
+
+jobs:
+  scan:
+    name: security/scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: secrets scanning step
+        run: npx --yes gitleaks@8.21.2 detect --source . --no-git --redact
+      - name: vulnerability scanning step
+        run: npm audit --audit-level=high
+      - name: security/scan
+        run: npm run security:scan
