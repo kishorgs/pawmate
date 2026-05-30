@@ -4,24 +4,20 @@ on:
   push:
     tags:
       - 'v*'
-      - 'v*.*.*'
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  release-tag-automation:
+  release-tag:
     name: Release/tag automation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - name: Release/tag automation
         run: npm run release:tag-automation
-
-      - name: Publish release for tag
-        uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           generate_release_notes: true
