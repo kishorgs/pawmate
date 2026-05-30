@@ -10,7 +10,7 @@ export const petCreateSchema = z.object({
   birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}/, "Expected ISO date"),
   petType: z.enum(PET_TYPES),
   gender: z.enum(PET_GENDERS),
-  weightKg: z.number().min(0).max(500).optional(),
+  weightKg: z.coerce.number().min(0).max(500).optional(),
   photoUrl: z.string().url().max(2000).optional().or(z.literal("")),
   ownerId: z.string().min(1),
 });

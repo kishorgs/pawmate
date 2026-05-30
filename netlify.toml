@@ -1,0 +1,31 @@
+[build]
+  command = "npm run build -w apps/frontend"
+  publish = "apps/frontend/.next"
+  functions = "apps/frontend/functions"
+
+[context.production]
+  environment = { NODE_ENV = "production" }
+
+[context.development]
+  environment = { NODE_ENV = "development" }
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[dev]
+  command = "npm run dev -w apps/frontend"
+  port = 3000
+
+[[edge_functions]]
+  path = "/api/*"
+  function = "api"
