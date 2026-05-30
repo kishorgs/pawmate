@@ -1,5 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 
 export class CreateOwnerDto {
   @ApiProperty()
@@ -30,7 +36,7 @@ export class CreateOwnerDto {
   @IsString()
   @MinLength(5)
   @MaxLength(30)
-  @Matches(/^[+0-9 ()\-]+$/)
+  @Matches(/^[+0-9 ()-]+$/)
   phone!: string;
 
   @ApiProperty()

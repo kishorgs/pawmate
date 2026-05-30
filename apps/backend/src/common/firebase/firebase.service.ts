@@ -17,7 +17,9 @@ export class FirebaseService implements OnModuleInit {
       if (!serviceAccountJson) {
         throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON is required');
       }
-      const serviceAccount = JSON.parse(serviceAccountJson) as admin.ServiceAccount;
+      const serviceAccount = JSON.parse(
+        serviceAccountJson,
+      ) as admin.ServiceAccount;
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         projectId:

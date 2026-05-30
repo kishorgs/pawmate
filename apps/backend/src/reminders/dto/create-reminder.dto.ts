@@ -14,7 +14,11 @@ import {
 
 export const REMINDER_TYPES = ['VACCINATION', 'MEDICATION'] as const;
 export const FREQUENCY_UNITS = ['DAY', 'WEEK', 'MONTH', 'YEAR'] as const;
-export const END_CONDITIONS = ['NEVER', 'END_DATE', 'OCCURRENCE_COUNT'] as const;
+export const END_CONDITIONS = [
+  'NEVER',
+  'END_DATE',
+  'OCCURRENCE_COUNT',
+] as const;
 
 export class CreateReminderDto {
   @ApiProperty()
@@ -39,7 +43,7 @@ export class CreateReminderDto {
   notes?: string;
 
   @ApiPropertyOptional()
-  @ValidateIf((o) => o.type === 'MEDICATION')
+  @ValidateIf((o: CreateReminderDto) => o.type === 'MEDICATION')
   @IsString()
   @MinLength(1)
   @MaxLength(120)
@@ -78,13 +82,13 @@ export class CreateReminderDto {
   endCondition!: (typeof END_CONDITIONS)[number];
 
   @ApiPropertyOptional()
-  @ValidateIf((o) => o.endCondition === 'END_DATE')
+  @ValidateIf((o: CreateReminderDto) => o.endCondition === 'END_DATE')
   @IsString()
   @MinLength(8)
   endDate?: string;
 
   @ApiPropertyOptional()
-  @ValidateIf((o) => o.endCondition === 'OCCURRENCE_COUNT')
+  @ValidateIf((o: CreateReminderDto) => o.endCondition === 'OCCURRENCE_COUNT')
   @Type(() => Number)
   @IsInt()
   @Min(1)

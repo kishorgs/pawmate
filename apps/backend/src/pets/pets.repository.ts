@@ -28,7 +28,11 @@ export class PetsRepository {
 
   async createPet(input: CreatePetDto): Promise<PetDocument> {
     const now = new Date().toISOString();
-    const ref = await this.collection().add({ ...input, createdAt: now, updatedAt: now });
+    const ref = await this.collection().add({
+      ...input,
+      createdAt: now,
+      updatedAt: now,
+    });
     const snapshot = await ref.get();
     return { id: ref.id, ...(snapshot.data() as Omit<PetDocument, 'id'>) };
   }

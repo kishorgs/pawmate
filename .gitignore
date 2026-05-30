@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+**/node_modules
+**/.next
 dist
 dist-ssr
 .output
@@ -15,6 +17,10 @@ dist-ssr
 .tanstack/**
 .nitro
 *.local
+
+# Ignore nested workspace lockfiles
+apps/backend/package-lock.json
+apps/frontend/package-lock.json
 
 # Environment variables
 .env

@@ -38,38 +38,64 @@ export class AppointmentsRepository {
       updatedAt: now,
     });
     const snapshot = await ref.get();
-    return { id: ref.id, ...(snapshot.data() as Omit<AppointmentDocument, 'id'>) };
+    return {
+      id: ref.id,
+      ...(snapshot.data() as Omit<AppointmentDocument, 'id'>),
+    };
   }
 
   async findAppointmentById(id: string): Promise<AppointmentDocument | null> {
     const snapshot = await this.collection().doc(id).get();
     if (!snapshot.exists) return null;
-    return { id: snapshot.id, ...(snapshot.data() as Omit<AppointmentDocument, 'id'>) };
+    return {
+      id: snapshot.id,
+      ...(snapshot.data() as Omit<AppointmentDocument, 'id'>),
+    };
   }
 
   async listAppointments(): Promise<AppointmentDocument[]> {
-    const snapshot = await this.collection().orderBy('scheduledAt').limit(500).get();
+    const snapshot = await this.collection()
+      .orderBy('scheduledAt')
+      .limit(500)
+      .get();
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as Omit<AppointmentDocument, 'id'>),
     }));
   }
 
-  async listAppointmentsByOwner(ownerId: string): Promise<AppointmentDocument[]> {
-    const snapshot = await this.collection().where('ownerId', '==', ownerId).limit(500).get();
+  async listAppointmentsByOwner(
+    ownerId: string,
+  ): Promise<AppointmentDocument[]> {
+    const snapshot = await this.collection()
+      .where('ownerId', '==', ownerId)
+      .limit(500)
+      .get();
     return snapshot.docs
-      .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<AppointmentDocument, 'id'>) }))
+      .map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<AppointmentDocument, 'id'>),
+      }))
       .sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
   }
 
   async listAppointmentsByPet(petId: string): Promise<AppointmentDocument[]> {
-    const snapshot = await this.collection().where('petId', '==', petId).limit(500).get();
+    const snapshot = await this.collection()
+      .where('petId', '==', petId)
+      .limit(500)
+      .get();
     return snapshot.docs
-      .map((doc) => ({ id: doc.id, ...(doc.data() as Omit<AppointmentDocument, 'id'>) }))
+      .map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<AppointmentDocument, 'id'>),
+      }))
       .sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
   }
 
-  async updateAppointment(id: string, patch: UpdateAppointmentDto): Promise<void> {
+  async updateAppointment(
+    id: string,
+    patch: UpdateAppointmentDto,
+  ): Promise<void> {
     await this.collection()
       .doc(id)
       .update({ ...patch, updatedAt: new Date().toISOString() });

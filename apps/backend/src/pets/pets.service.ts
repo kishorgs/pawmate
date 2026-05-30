@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { OwnersRepository } from '../owners/owners.repository';
 import { AuthenticatedUser } from '../common/types/app-role';
 import { CreatePetDto } from './dto/create-pet.dto';
@@ -19,7 +23,10 @@ export class PetsService {
     return this.petsRepository.listPetsByOwner(owner.id);
   }
 
-  async listPetsForOwner(ownerId: string, user: AuthenticatedUser): Promise<PetDocument[]> {
+  async listPetsForOwner(
+    ownerId: string,
+    user: AuthenticatedUser,
+  ): Promise<PetDocument[]> {
     await this.assertOwnerAccess(ownerId, user);
     return this.petsRepository.listPetsByOwner(ownerId);
   }
@@ -47,13 +54,19 @@ export class PetsService {
     await this.petsRepository.deletePet(id);
   }
 
-  private async assertPetAccess(ownerId: string, user: AuthenticatedUser): Promise<void> {
+  private async assertPetAccess(
+    ownerId: string,
+    user: AuthenticatedUser,
+  ): Promise<void> {
     if (user.role === 'ADMIN') return;
     const owner = await this.ownersRepository.findOwnerByUserUid(user.uid);
     if (!owner || owner.id !== ownerId) throw new ForbiddenException();
   }
 
-  private async assertOwnerAccess(ownerId: string, user: AuthenticatedUser): Promise<void> {
+  private async assertOwnerAccess(
+    ownerId: string,
+    user: AuthenticatedUser,
+  ): Promise<void> {
     if (user.role === 'ADMIN') return;
     const owner = await this.ownersRepository.findOwnerByUserUid(user.uid);
     if (!owner || owner.id !== ownerId) throw new ForbiddenException();

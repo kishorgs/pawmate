@@ -9,12 +9,17 @@ export interface CalendarEventInput {
 }
 
 function toCalendarDate(date: Date): string {
-  return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  return date
+    .toISOString()
+    .replace(/[-:]/g, '')
+    .replace(/\.\d{3}/, '');
 }
 
 export function buildGoogleCalendarUrl(event: CalendarEventInput): string {
   const start =
-    typeof event.startsAt === 'string' ? new Date(event.startsAt) : event.startsAt;
+    typeof event.startsAt === 'string'
+      ? new Date(event.startsAt)
+      : event.startsAt;
   const end = addMinutes(start, event.durationMinutes ?? 30);
   const params = new URLSearchParams({
     action: 'TEMPLATE',

@@ -60,7 +60,9 @@ export class DashboardService {
         : owner
           ? this.petsRepository.listPetsByOwner(owner.id)
           : Promise.resolve([]),
-      isAdmin ? this.veterinariansRepository.listVeterinarians() : Promise.resolve([]),
+      isAdmin
+        ? this.veterinariansRepository.listVeterinarians()
+        : Promise.resolve([]),
       isAdmin
         ? this.appointmentsRepository.listAppointments()
         : owner
@@ -95,7 +97,8 @@ export class DashboardService {
     const upcomingAppointments = appointments
       .filter(
         (appointment) =>
-          new Date(appointment.scheduledAt) >= now && appointment.status !== 'CANCELLED',
+          new Date(appointment.scheduledAt) >= now &&
+          appointment.status !== 'CANCELLED',
       )
       .sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
 
@@ -113,12 +116,14 @@ export class DashboardService {
           (reminder) => reminder.type === 'MEDICATION',
         ).length,
       },
-      upcomingAppointments: upcomingAppointments.slice(0, 5).map((appointment) => ({
-        id: appointment.id,
-        scheduledAt: appointment.scheduledAt,
-        reason: appointment.reason,
-        petId: appointment.petId,
-      })),
+      upcomingAppointments: upcomingAppointments
+        .slice(0, 5)
+        .map((appointment) => ({
+          id: appointment.id,
+          scheduledAt: appointment.scheduledAt,
+          reason: appointment.reason,
+          petId: appointment.petId,
+        })),
       upcomingReminders: enrichedReminders.slice(0, 8),
     };
   }

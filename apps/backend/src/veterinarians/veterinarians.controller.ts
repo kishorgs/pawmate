@@ -41,7 +41,10 @@ export class VeterinariansController {
 
   @Patch(':id')
   @Roles('ADMIN')
-  updateVeterinarian(@Param('id') id: string, @Body() body: UpdateVeterinarianDto) {
+  updateVeterinarian(
+    @Param('id') id: string,
+    @Body() body: UpdateVeterinarianDto,
+  ) {
     return this.veterinariansService.updateVeterinarian(id, body);
   }
 

@@ -11,7 +11,14 @@ import {
   MinLength,
 } from 'class-validator';
 
-export const PET_TYPES = ['DOG', 'CAT', 'BIRD', 'RABBIT', 'REPTILE', 'OTHER'] as const;
+export const PET_TYPES = [
+  'DOG',
+  'CAT',
+  'BIRD',
+  'RABBIT',
+  'REPTILE',
+  'OTHER',
+] as const;
 export const PET_GENDERS = ['MALE', 'FEMALE', 'UNKNOWN'] as const;
 
 export class CreatePetDto {

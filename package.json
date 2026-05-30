@@ -1,6 +1,7 @@
 {
   "name": "pawmate",
   "private": true,
+  "packageManager": "npm@10",
   "workspaces": [
     "apps/backend",
     "apps/frontend"
@@ -10,6 +11,11 @@
     "dev:frontend": "npm run dev -w apps/frontend",
     "build:backend": "npm run build -w apps/backend",
     "build:frontend": "npm run build -w apps/frontend",
-    "test:backend": "npm test -w apps/backend"
+    "build": "npm run build:frontend && npm run build:backend",
+    "lint:frontend": "npm run lint -w apps/frontend",
+    "lint:backend": "npm run lint -w apps/backend",
+    "lint": "npm run lint:frontend && npm run lint:backend",
+    "test:backend": "npm test -w apps/backend",
+    "test": "npm run test:backend"
   }
 }

@@ -49,7 +49,9 @@ export class RemindersService {
     };
   }
 
-  async listRemindersForUser(user: AuthenticatedUser): Promise<EnrichedReminder[]> {
+  async listRemindersForUser(
+    user: AuthenticatedUser,
+  ): Promise<EnrichedReminder[]> {
     let reminders: ReminderDocument[];
     if (user.role === 'ADMIN') {
       reminders = await this.remindersRepository.listAllReminders();
@@ -61,10 +63,15 @@ export class RemindersService {
     }
     return reminders
       .map((reminder) => this.enrich(reminder))
-      .sort((a, b) => (a.nextOccurrence ?? '9999').localeCompare(b.nextOccurrence ?? '9999'));
+      .sort((a, b) =>
+        (a.nextOccurrence ?? '9999').localeCompare(b.nextOccurrence ?? '9999'),
+      );
   }
 
-  async listRemindersByPet(petId: string, user: AuthenticatedUser): Promise<EnrichedReminder[]> {
+  async listRemindersByPet(
+    petId: string,
+    user: AuthenticatedUser,
+  ): Promise<EnrichedReminder[]> {
     const pet = await this.petsRepository.findPetById(petId);
     if (!pet) return [];
     if (user.role !== 'ADMIN') {
@@ -75,19 +82,25 @@ export class RemindersService {
     return reminders.map((reminder) => this.enrich(reminder));
   }
 
-  async getReminderById(id: string, user: AuthenticatedUser): Promise<EnrichedReminder> {
+  async getReminderById(
+    id: string,
+    user: AuthenticatedUser,
+  ): Promise<EnrichedReminder> {
     const reminder = await this.remindersRepository.findReminderById(id);
     if (!reminder) throw new NotFoundException('Reminder not found');
     if (user.role !== 'ADMIN') {
       const owner = await this.ownersRepository.findOwnerByUserUid(user.uid);
-      if (!owner || owner.id !== reminder.ownerId) throw new ForbiddenException();
+      if (!owner || owner.id !== reminder.ownerId)
+        throw new ForbiddenException();
     }
     return this.enrich(reminder);
   }
 
   async createReminder(input: CreateReminderDto): Promise<EnrichedReminder> {
     if (input.type === 'MEDICATION' && !input.medicineName) {
-      throw new ForbiddenException('medicineName required for medication reminders');
+      throw new ForbiddenException(
+        'medicineName required for medication reminders',
+      );
     }
     const pet = await this.petsRepository.findPetById(input.petId);
     if (!pet) throw new NotFoundException('Pet not found');
@@ -99,7 +112,8 @@ export class RemindersService {
       });
       return this.enrich(reminder);
     } catch (error) {
-      const message = error instanceof Error ? error.stack ?? error.message : String(error);
+      const message =
+        error instanceof Error ? (error.stack ?? error.message) : String(error);
       this.logger.error(`Failed to create reminder: ${message}`);
       throw new InternalServerErrorException(
         'Unable to create reminder. Please verify the reminder data and try again.',

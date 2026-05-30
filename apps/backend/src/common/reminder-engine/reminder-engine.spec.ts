@@ -19,12 +19,18 @@ describe('ReminderEngine', () => {
   });
 
   it('calculates next occurrence after a reference date', () => {
-    const next = calculateNextOccurrence(weeklySchedule, new Date('2025-01-08'));
+    const next = calculateNextOccurrence(
+      weeklySchedule,
+      new Date('2025-01-08'),
+    );
     expect(next?.toISOString().slice(0, 10)).toBe('2025-01-15');
   });
 
   it('derives overdue status for past dates', () => {
-    const status = deriveReminderStatus(new Date('2020-01-01'), new Date('2025-01-01'));
+    const status = deriveReminderStatus(
+      new Date('2020-01-01'),
+      new Date('2025-01-01'),
+    );
     expect(status).toBe('OVERDUE');
   });
 });

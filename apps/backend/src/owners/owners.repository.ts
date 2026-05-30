@@ -26,7 +26,9 @@ export class OwnersRepository {
     return this.firebaseService.firestore.collection(OWNERS_COLLECTION);
   }
 
-  async createOwner(input: CreateOwnerDto & { userUid?: string | null }): Promise<OwnerDocument> {
+  async createOwner(
+    input: CreateOwnerDto & { userUid?: string | null },
+  ): Promise<OwnerDocument> {
     const now = new Date().toISOString();
     const ref = await this.collection().add({
       ...input,
@@ -41,18 +43,27 @@ export class OwnersRepository {
   async findOwnerById(id: string): Promise<OwnerDocument | null> {
     const snapshot = await this.collection().doc(id).get();
     if (!snapshot.exists) return null;
-    return { id: snapshot.id, ...(snapshot.data() as Omit<OwnerDocument, 'id'>) };
+    return {
+      id: snapshot.id,
+      ...(snapshot.data() as Omit<OwnerDocument, 'id'>),
+    };
   }
 
   async findOwnerByUserUid(uid: string): Promise<OwnerDocument | null> {
-    const snapshot = await this.collection().where('userUid', '==', uid).limit(1).get();
+    const snapshot = await this.collection()
+      .where('userUid', '==', uid)
+      .limit(1)
+      .get();
     if (snapshot.empty) return null;
     const doc = snapshot.docs[0];
     return { id: doc.id, ...(doc.data() as Omit<OwnerDocument, 'id'>) };
   }
 
   async listOwners(): Promise<OwnerDocument[]> {
-    const snapshot = await this.collection().orderBy('lastName').limit(500).get();
+    const snapshot = await this.collection()
+      .orderBy('lastName')
+      .limit(500)
+      .get();
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as Omit<OwnerDocument, 'id'>),

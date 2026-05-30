@@ -8,7 +8,9 @@ import {
 
 @Injectable()
 export class VeterinariansService {
-  constructor(private readonly veterinariansRepository: VeterinariansRepository) {}
+  constructor(
+    private readonly veterinariansRepository: VeterinariansRepository,
+  ) {}
 
   listVeterinarians(): Promise<VeterinarianDocument[]> {
     return this.veterinariansRepository.listVeterinarians();
@@ -20,11 +22,16 @@ export class VeterinariansService {
     return vet;
   }
 
-  createVeterinarian(input: CreateVeterinarianDto): Promise<VeterinarianDocument> {
+  createVeterinarian(
+    input: CreateVeterinarianDto,
+  ): Promise<VeterinarianDocument> {
     return this.veterinariansRepository.createVeterinarian(input);
   }
 
-  async updateVeterinarian(id: string, patch: UpdateVeterinarianDto): Promise<void> {
+  async updateVeterinarian(
+    id: string,
+    patch: UpdateVeterinarianDto,
+  ): Promise<void> {
     await this.getVeterinarianById(id);
     await this.veterinariansRepository.updateVeterinarian(id, patch);
   }

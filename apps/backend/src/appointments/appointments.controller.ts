@@ -31,7 +31,10 @@ export class AppointmentsController {
   }
 
   @Get(':id')
-  getAppointment(@Param('id') id: string, @CurrentUser() user: AuthenticatedUser) {
+  getAppointment(
+    @Param('id') id: string,
+    @CurrentUser() user: AuthenticatedUser,
+  ) {
     return this.appointmentsService.getAppointmentById(id, user);
   }
 
@@ -43,7 +46,10 @@ export class AppointmentsController {
 
   @Patch(':id')
   @Roles('ADMIN')
-  updateAppointment(@Param('id') id: string, @Body() body: UpdateAppointmentDto) {
+  updateAppointment(
+    @Param('id') id: string,
+    @Body() body: UpdateAppointmentDto,
+  ) {
     return this.appointmentsService.updateAppointment(id, body);
   }
 

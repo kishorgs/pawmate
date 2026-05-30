@@ -57,11 +57,17 @@ export class RemindersRepository {
   async findReminderById(id: string): Promise<ReminderDocument | null> {
     const snapshot = await this.collection().doc(id).get();
     if (!snapshot.exists) return null;
-    return { id: snapshot.id, ...(snapshot.data() as Omit<ReminderDocument, 'id'>) };
+    return {
+      id: snapshot.id,
+      ...(snapshot.data() as Omit<ReminderDocument, 'id'>),
+    };
   }
 
   async listRemindersByOwner(ownerId: string): Promise<ReminderDocument[]> {
-    const snapshot = await this.collection().where('ownerId', '==', ownerId).limit(500).get();
+    const snapshot = await this.collection()
+      .where('ownerId', '==', ownerId)
+      .limit(500)
+      .get();
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as Omit<ReminderDocument, 'id'>),
@@ -69,7 +75,10 @@ export class RemindersRepository {
   }
 
   async listRemindersByPet(petId: string): Promise<ReminderDocument[]> {
-    const snapshot = await this.collection().where('petId', '==', petId).limit(500).get();
+    const snapshot = await this.collection()
+      .where('petId', '==', petId)
+      .limit(500)
+      .get();
     return snapshot.docs.map((doc) => ({
       id: doc.id,
       ...(doc.data() as Omit<ReminderDocument, 'id'>),

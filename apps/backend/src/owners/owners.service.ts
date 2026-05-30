@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AuthenticatedUser } from '../common/types/app-role';
 import { CreateOwnerDto } from './dto/create-owner.dto';
 import { UpdateOwnerDto } from './dto/update-owner.dto';
@@ -12,7 +16,10 @@ export class OwnersService {
     return this.ownersRepository.listOwners();
   }
 
-  async getOwnerById(id: string, user: AuthenticatedUser): Promise<OwnerDocument> {
+  async getOwnerById(
+    id: string,
+    user: AuthenticatedUser,
+  ): Promise<OwnerDocument> {
     const owner = await this.ownersRepository.findOwnerById(id);
     if (!owner) throw new NotFoundException('Owner not found');
     if (user.role !== 'ADMIN' && owner.userUid !== user.uid) {

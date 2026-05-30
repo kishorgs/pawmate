@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { OwnersRepository } from '../owners/owners.repository';
 import { PetsRepository } from '../pets/pets.repository';
 import { AuthenticatedUser } from '../common/types/app-role';
@@ -25,7 +29,10 @@ export class VisitsService {
     return visits.flat().sort((a, b) => b.visitDate.localeCompare(a.visitDate));
   }
 
-  async listVisitsByPet(petId: string, user: AuthenticatedUser): Promise<VisitDocument[]> {
+  async listVisitsByPet(
+    petId: string,
+    user: AuthenticatedUser,
+  ): Promise<VisitDocument[]> {
     const pet = await this.petsRepository.findPetById(petId);
     if (!pet) throw new NotFoundException('Pet not found');
     if (user.role !== 'ADMIN') {
@@ -35,7 +42,10 @@ export class VisitsService {
     return this.visitsRepository.listVisitsByPet(petId);
   }
 
-  async getVisitById(id: string, user: AuthenticatedUser): Promise<VisitDocument> {
+  async getVisitById(
+    id: string,
+    user: AuthenticatedUser,
+  ): Promise<VisitDocument> {
     const visit = await this.visitsRepository.findVisitById(id);
     if (!visit) throw new NotFoundException('Visit not found');
     if (user.role !== 'ADMIN') {
@@ -48,7 +58,10 @@ export class VisitsService {
   async createVisit(input: CreateVisitDto): Promise<VisitDocument> {
     const pet = await this.petsRepository.findPetById(input.petId);
     if (!pet) throw new NotFoundException('Pet not found');
-    return this.visitsRepository.createVisit({ ...input, ownerId: pet.ownerId });
+    return this.visitsRepository.createVisit({
+      ...input,
+      ownerId: pet.ownerId,
+    });
   }
 
   async updateVisit(id: string, patch: UpdateVisitDto): Promise<void> {

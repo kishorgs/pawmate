@@ -1,4 +1,12 @@
-import { addDays, addMonths, addWeeks, addYears, isAfter, isBefore, isEqual } from 'date-fns';
+import {
+  addDays,
+  addMonths,
+  addWeeks,
+  addYears,
+  isAfter,
+  isBefore,
+  isEqual,
+} from 'date-fns';
 
 export type FrequencyUnit = 'DAY' | 'WEEK' | 'MONTH' | 'YEAR';
 export type EndConditionType = 'NEVER' | 'END_DATE' | 'OCCURRENCE_COUNT';
@@ -14,7 +22,11 @@ export interface ReminderSchedule {
   occurrenceCount?: number;
 }
 
-export function addInterval(date: Date, value: number, unit: FrequencyUnit): Date {
+export function addInterval(
+  date: Date,
+  value: number,
+  unit: FrequencyUnit,
+): Date {
   switch (unit) {
     case 'DAY':
       return addDays(date, value);
@@ -31,7 +43,9 @@ export function calculateNextOccurrence(
   schedule: ReminderSchedule,
   from: Date = new Date(),
 ): Date | null {
-  const occurrences = generateOccurrences(schedule, { upTo: addYears(from, 5) });
+  const occurrences = generateOccurrences(schedule, {
+    upTo: addYears(from, 5),
+  });
   return occurrences.find((d) => isAfter(d, from)) ?? null;
 }
 
@@ -61,7 +75,10 @@ export function generateOccurrences(
       const end = new Date(schedule.endDate);
       if (isAfter(current, end)) break;
     }
-    if (endCondition === 'OCCURRENCE_COUNT' && schedule.occurrenceCount != null) {
+    if (
+      endCondition === 'OCCURRENCE_COUNT' &&
+      schedule.occurrenceCount != null
+    ) {
       if (count >= schedule.occurrenceCount) break;
     }
     if (isAfter(current, upTo)) break;
@@ -81,7 +98,10 @@ export function deriveReminderStatus(
   if (!nextOccurrence) return 'COMPLETED';
   const dueStart = addDays(now, -0);
   const dueEnd = addDays(now, dueWindowDays);
-  if (isBefore(nextOccurrence, dueStart) && !isEqual(nextOccurrence, dueStart)) {
+  if (
+    isBefore(nextOccurrence, dueStart) &&
+    !isEqual(nextOccurrence, dueStart)
+  ) {
     return 'OVERDUE';
   }
   if (!isAfter(nextOccurrence, dueEnd)) return 'DUE';
